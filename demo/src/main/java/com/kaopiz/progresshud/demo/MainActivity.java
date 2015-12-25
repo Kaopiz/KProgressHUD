@@ -88,10 +88,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setDetailsLabel("Downloading data");
                 break;
             case R.id.determinate:
+                hud = KProgressHUD.create(MainActivity.this)
+                        .setStyle(KProgressHUD.Style.DETERMINATE)
+                        .setLabel("Please wait");
                 break;
             case R.id.annular_determinate:
+                hud = KProgressHUD.create(MainActivity.this)
+                        .setStyle(KProgressHUD.Style.ANNULAR_DETERMINATE)
+                        .setLabel("Please wait");
                 break;
             case R.id.bar_determinate:
+                hud = KProgressHUD.create(MainActivity.this)
+                        .setStyle(KProgressHUD.Style.BAR_DETERMINATE)
+                        .setLabel("Please wait");
                 break;
             case R.id.custom_view:
                 ImageView imageView = new ImageView(this);

@@ -235,10 +235,13 @@ public class KProgressHUD {
                     indicatorView = view;
                     break;
                 case DETERMINATE:
+                    indicatorView = new DeterminateView(getContext());
                     break;
                 case ANNULAR_DETERMINATE:
+                    indicatorView = new AnnularView(getContext());
                     break;
                 case BAR_DETERMINATE:
+                    indicatorView = new BarView(getContext());
                     break;
                 case CUSTOM_VIEW:
                     if (mCustomView == null)
