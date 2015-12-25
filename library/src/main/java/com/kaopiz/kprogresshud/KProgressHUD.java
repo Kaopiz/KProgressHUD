@@ -51,7 +51,6 @@ public class KProgressHUD {
     private String mDetailsLabel;
 
     private int mMaxProgress;
-    private int mProgress;
 
     private View mCustomView;
 
@@ -62,7 +61,7 @@ public class KProgressHUD {
         //noinspection deprecation
         mWindowColor = context.getResources().getColor(R.color.kprogresshud_default_color);
         mAnimateSpeed = 1;
-        mCornerRadius = 15;
+        mCornerRadius = 10;
     }
 
     /**
@@ -109,7 +108,8 @@ public class KProgressHUD {
     }
 
     /**
-     * Specify corner radius of the HUD (default is 15)
+     * Specify corner radius of the HUD (default is 10)
+     * @param radius Corner radius in dp
      * @return Current HUD
      */
     public KProgressHUD setCornerRadius(float radius) {
@@ -158,6 +158,10 @@ public class KProgressHUD {
      * Set current progress. Only have effect when use with a determinate style
      */
     public void setProgress(int progress) {
+        mProgressDialog.setProgress(progress);
+        if (progress >= mMaxProgress && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 
     /**
@@ -198,6 +202,8 @@ public class KProgressHUD {
 
     private class ProgressDialog extends Dialog {
 
+        private Progress mProgressView;
+
         public ProgressDialog(Context context) {
             super(context);
         }
@@ -235,13 +241,19 @@ public class KProgressHUD {
                     indicatorView = view;
                     break;
                 case DETERMINATE:
-                    indicatorView = new DeterminateView(getContext());
+                    DeterminateView determinateView = new DeterminateView(getContext());
+                    indicatorView = determinateView;
+                    mProgressView = determinateView;
                     break;
                 case ANNULAR_DETERMINATE:
-                    indicatorView = new AnnularView(getContext());
+                    AnnularView annularView = new AnnularView(getContext());
+                    indicatorView = annularView;
+                    mProgressView = annularView;
                     break;
                 case BAR_DETERMINATE:
-                    indicatorView = new BarView(getContext());
+                    BarView barView = new BarView(getContext());
+                    indicatorView = barView;
+                    mProgressView = barView;
                     break;
                 case CUSTOM_VIEW:
                     if (mCustomView == null)
@@ -253,6 +265,10 @@ public class KProgressHUD {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(wrapParam, wrapParam);
             containerFrame.addView(indicatorView, params);
 
+            if (mProgressView != null) {
+                mProgressView.setMax(mMaxProgress);
+            }
+
             if (mLabel != null) {
                 TextView labelText = (TextView) findViewById(R.id.label);
                 labelText.setText(mLabel);
@@ -262,6 +278,12 @@ public class KProgressHUD {
                 TextView detailsText = (TextView) findViewById(R.id.details_label);
                 detailsText.setText(mDetailsLabel);
                 detailsText.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public void setProgress(int progress) {
+            if (mProgressView != null) {
+                mProgressView.setProgress(progress);
             }
         }
     }

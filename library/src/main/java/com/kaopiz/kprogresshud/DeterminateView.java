@@ -32,12 +32,12 @@ public class DeterminateView extends View implements Progress{
     private void init(){
         whitePaint = new Paint();
         whitePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        whitePaint.setStrokeWidth(5);
+        whitePaint.setStrokeWidth(Helper.dpToPixel(2, getContext()));
         whitePaint.setColor(Color.WHITE);
 
         greyPaint = new Paint();
         greyPaint.setStyle(Paint.Style.STROKE);
-        greyPaint.setStrokeWidth(5);
+        greyPaint.setStrokeWidth(Helper.dpToPixel(2, getContext()));
         greyPaint.setColor(Color.WHITE);
     }
 
@@ -50,16 +50,16 @@ public class DeterminateView extends View implements Progress{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float mAngle = mProgress / mMax * 360;
+        float mAngle = mProgress * 360f / mMax;
         canvas.drawArc(mBound, 270, mAngle, true, whitePaint);
         canvas.drawArc(mBound, 270 + mAngle, 360 - mAngle, false, greyPaint);
-        invalidate();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(150, 150);
+        int dimension = Helper.dpToPixel(40, getContext());
+        setMeasuredDimension(dimension, dimension);
     }
 
     @Override
@@ -70,5 +70,6 @@ public class DeterminateView extends View implements Progress{
     @Override
     public void setProgress(int progress) {
         this.mProgress = progress;
+        invalidate();
     }
 }

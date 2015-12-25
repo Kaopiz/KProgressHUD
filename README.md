@@ -31,7 +31,7 @@ KProgressHUD.create(MainActivity.this)
 	.show();
 ```
 
-See Javadocs for more information.
+See [**Javadocs**](http://kaopiz.github.io/KProgressHUD/) for more information.
 
 ## License
 

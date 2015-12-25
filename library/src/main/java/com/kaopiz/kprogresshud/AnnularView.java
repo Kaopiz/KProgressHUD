@@ -33,12 +33,12 @@ public class AnnularView extends View implements Progress{
     private void init(Context context){
         whitePaint = new Paint();
         whitePaint.setStyle(Paint.Style.STROKE);
-        whitePaint.setStrokeWidth(10);
+        whitePaint.setStrokeWidth(Helper.dpToPixel(3, getContext()));
         whitePaint.setColor(Color.WHITE);
 
         greyPaint = new Paint();
         greyPaint.setStyle(Paint.Style.STROKE);
-        greyPaint.setStrokeWidth(10);
+        greyPaint.setStrokeWidth(Helper.dpToPixel(3, getContext()));
         greyPaint.setColor(ContextCompat.getColor(context, R.color.kprogresshud_grey_color));
     }
 
@@ -51,16 +51,16 @@ public class AnnularView extends View implements Progress{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float mAngle = mProgress / mMax * 360;
+        float mAngle = mProgress * 360f / mMax;
         canvas.drawArc(mBound, 270, mAngle, false, whitePaint);
         canvas.drawArc(mBound, 270 + mAngle, 360 - mAngle, false, greyPaint);
-        invalidate();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(150, 150);
+        int dimension = Helper.dpToPixel(40, getContext());
+        setMeasuredDimension(dimension, dimension);
     }
 
     @Override
@@ -71,5 +71,6 @@ public class AnnularView extends View implements Progress{
     @Override
     public void setProgress(int progress) {
         this.mProgress = progress;
+        invalidate();
     }
 }

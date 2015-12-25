@@ -8,13 +8,17 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class BarView extends View implements Progress{
+public class BarView extends View implements Progress {
+
     private Paint outerPaint;
     private Paint innerPaint;
     private RectF mBound;
     private RectF mInBound;
     private int mMax = 100;
     private int mProgress = 0;
+    private float mRadius;
+    private float mBoundGap;
+
     public BarView(Context context) {
         super(context);
         init();
@@ -30,37 +34,43 @@ public class BarView extends View implements Progress{
         init();
     }
 
-    private void init(){
+    private void init() {
         outerPaint = new Paint();
         outerPaint.setStyle(Paint.Style.STROKE);
-        outerPaint.setStrokeWidth(5);
+        outerPaint.setStrokeWidth(Helper.dpToPixel(2, getContext()));
         outerPaint.setColor(Color.WHITE);
 
         innerPaint = new Paint();
         innerPaint.setStyle(Paint.Style.FILL);
         innerPaint.setColor(Color.WHITE);
 
-        mInBound = new RectF(20, 20, (getWidth()-20)*mProgress/mMax, getHeight()-20);
+        mBoundGap = Helper.dpToPixel(5, getContext());
+        mInBound = new RectF(mBoundGap, mBoundGap,
+                (getWidth() - mBoundGap) * mProgress / mMax, getHeight() - mBoundGap);
+
+        mRadius = Helper.dpToPixel(10, getContext());
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mBound = new RectF(10, 10, w-10, h-10);
+        int padding = Helper.dpToPixel(2, getContext());
+        mBound = new RectF(padding, padding, w - padding, h - padding);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRoundRect(mBound, 30, 30, outerPaint);
-        canvas.drawRoundRect(mInBound, 30, 30, innerPaint);
-        invalidate();
+        canvas.drawRoundRect(mBound, mRadius, mRadius, outerPaint);
+        canvas.drawRoundRect(mInBound, mRadius, mRadius, innerPaint);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(500,70);
+        int widthDimension = Helper.dpToPixel(100, getContext());
+        int heightDimension = Helper.dpToPixel(20, getContext());
+        setMeasuredDimension(widthDimension, heightDimension);
     }
 
     @Override
@@ -71,6 +81,8 @@ public class BarView extends View implements Progress{
     @Override
     public void setProgress(int progress) {
         this.mProgress = progress;
-        mInBound = new RectF(20, 20, (getWidth()-20)*mProgress/mMax, getHeight()-20);
+        mInBound.set(mBoundGap, mBoundGap,
+                (getWidth() - mBoundGap) * mProgress / mMax, getHeight() - mBoundGap);
+        invalidate();
     }
 }

@@ -67,40 +67,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         customColor.setOnClickListener(this);
     }
 
+    private KProgressHUD hud;
+
     @Override
     public void onClick(View v) {
-        KProgressHUD hud = null;
         switch (v.getId()) {
             case R.id.indeterminate:
                 hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.INDETERMINATE);
+                scheduleDismiss();
                 break;
             case R.id.label_indeterminate:
                 hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.INDETERMINATE)
                         .setLabel("Please wait")
                         .setCancellable(true);
+                scheduleDismiss();
                 break;
             case R.id.detail_indeterminate:
                 hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.INDETERMINATE)
                         .setLabel("Please wait")
                         .setDetailsLabel("Downloading data");
+                scheduleDismiss();
                 break;
             case R.id.determinate:
                 hud = KProgressHUD.create(MainActivity.this)
                         .setStyle(KProgressHUD.Style.DETERMINATE)
                         .setLabel("Please wait");
+                simulateProgressUpdate();
                 break;
             case R.id.annular_determinate:
                 hud = KProgressHUD.create(MainActivity.this)
                         .setStyle(KProgressHUD.Style.ANNULAR_DETERMINATE)
                         .setLabel("Please wait");
+                simulateProgressUpdate();
                 break;
             case R.id.bar_determinate:
                 hud = KProgressHUD.create(MainActivity.this)
                         .setStyle(KProgressHUD.Style.BAR_DETERMINATE)
                         .setLabel("Please wait");
+                simulateProgressUpdate();
                 break;
             case R.id.custom_view:
                 ImageView imageView = new ImageView(this);
@@ -109,11 +116,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setStyle(KProgressHUD.Style.CUSTOM_VIEW)
                         .setCustomView(imageView)
                         .setLabel("This is a custom view");
+                scheduleDismiss();
                 break;
             case R.id.dim_background:
                 hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.INDETERMINATE)
                         .setDimAmount(0.6f);
+                scheduleDismiss();
                 break;
             case R.id.custom_color_animate:
                 //noinspection deprecation
@@ -121,18 +130,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setStyle(KProgressHUD.Style.INDETERMINATE)
                         .setWindowColor(getResources().getColor(R.color.colorPrimary))
                         .setAnimationSpeed(2);
+                scheduleDismiss();
                 break;
         }
-        if (hud != null) {
-            hud.show();
-            Handler handler = new Handler();
-            final KProgressHUD finalHud = hud;
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    finalHud.dismiss();
+
+        hud.show();
+    }
+
+    private void simulateProgressUpdate() {
+        hud.setMaxProgress(100);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            int currentProgress;
+            @Override
+            public void run() {
+                currentProgress += 1;
+                hud.setProgress(currentProgress);
+                if (currentProgress < 100) {
+                    handler.postDelayed(this, 50);
                 }
-            }, 4000);
-        }
+            }
+        }, 100);
+    }
+
+    private void scheduleDismiss() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hud.dismiss();
+            }
+        }, 4000);
     }
 }

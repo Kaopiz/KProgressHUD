@@ -58,7 +58,7 @@ public class BackgroundLayout extends FrameLayout {
     }
 
     public void setCornerRadius(float radius) {
-        mCornerRadius = radius;
+        mCornerRadius = Helper.dpToPixel(radius, getContext());
     }
 
     public void setBaseColor(int color) {
