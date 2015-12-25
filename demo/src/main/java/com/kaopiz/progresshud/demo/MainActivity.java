@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.dim_background:
                 hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.INDETERMINATE)
-                        .setDimAmount(0.6f);
+                        .setDimAmount(0.5f);
                 scheduleDismiss();
                 break;
             case R.id.custom_color_animate:
