@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="default_window_color">#d8000000</color>
+    <color name="grey_color">#449E9E9E</color>
 </resources>
