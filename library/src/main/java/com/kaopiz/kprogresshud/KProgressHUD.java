@@ -1,6 +1,27 @@
+/*
+ * Copyright (c) 2015 Kaopiz Software Co., Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package com.kaopiz.kprogresshud;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -23,14 +44,13 @@ public class KProgressHUD {
     private float mDimAmount;
     private int mWindowColor;
     private float mCornerRadius;
-    private boolean mIsActivityHandleBackPress;
+    private boolean mCancellable;
 
     private int mAnimateSpeed;
     private String mLabel;
     private String mDetailsLabel;
 
     private int mMaxProgress;
-    private int mProgress;
 
     private View mCustomView;
 
@@ -39,24 +59,37 @@ public class KProgressHUD {
         mStyle = Style.INDETERMINATE;
         mDimAmount = 0;
         //noinspection deprecation
-        mWindowColor = context.getResources().getColor(R.color.default_window_color);
+        mWindowColor = context.getResources().getColor(R.color.kprogresshud_default_color);
         mAnimateSpeed = 1;
-        mCornerRadius = 15;
+        mCornerRadius = 10;
     }
 
+    /**
+     * Create a new HUD with default indeterminate style.
+     * @param context Activity context that the HUD bound to
+     * @return An unique HUD instance
+     */
     public static KProgressHUD create(Context context) {
         return new KProgressHUD(context);
     }
 
-    /*
-     * Methods for HUD customizing
+    /**
+     * Specify the HUD style
+     * @param style One of the following KProgressHUD.Style values:
+     *              INDETERMINATE, DETERMINATE, ANNULAR_DETERMINATE, BAR_DETERMINATE, CUSTOM_VIEW
+     * @return Current HUD
      */
-
     public KProgressHUD setStyle(Style style) {
         mStyle = style;
         return this;
     }
 
+    /**
+     * Specify the dim area around the HUD, like in Dialog
+     * @param dimAmount May take value from 0 to 1.
+     *                  0 means no dimming, 1 mean darkness
+     * @return Current HUD
+     */
     public KProgressHUD setDimAmount(float dimAmount) {
         if (dimAmount >= 0 && dimAmount <= 1) {
             mDimAmount = dimAmount;
@@ -64,35 +97,78 @@ public class KProgressHUD {
         return this;
     }
 
+    /**
+     * Specify the HUD background color
+     * @param color ARGB color
+     * @return Current HUD
+     */
     public KProgressHUD setWindowColor(int color) {
         mWindowColor = color;
         return this;
     }
 
-    public KProgressHUD setAnimateSpeed(int scale) {
+    /**
+     * Specify corner radius of the HUD (default is 10)
+     * @param radius Corner radius in dp
+     * @return Current HUD
+     */
+    public KProgressHUD setCornerRadius(float radius) {
+        mCornerRadius = radius;
+        return this;
+    }
+
+    /**
+     * Change animate speed relative to default. Only have effect when use with indeterminate style
+     * @param scale 1 is default, 2 means double speed, 0.5 means half speed..etc.
+     * @return Current HUD
+     */
+    public KProgressHUD setAnimationSpeed(int scale) {
         mAnimateSpeed = scale;
         return this;
     }
 
+    /**
+     * Optional label to be displayed on the HUD
+     * @return Current HUD
+     */
     public KProgressHUD setLabel(String label) {
         mLabel = label;
         return this;
     }
 
+    /**
+     * Optional detail description to be displayed on the HUD
+     * @return Current HUD
+     */
     public KProgressHUD setDetailsLabel(String detailsLabel) {
         mDetailsLabel = detailsLabel;
         return this;
     }
 
+    /**
+     * Max value for use in one of the determinate styles
+     * @return Current HUD
+     */
     public KProgressHUD setMaxProgress(int maxProgress) {
         mMaxProgress = maxProgress;
         return this;
     }
 
-    public KProgressHUD setProgress(int progress) {
-        return this;
+    /**
+     * Set current progress. Only have effect when use with a determinate style
+     */
+    public void setProgress(int progress) {
+        mProgressDialog.setProgress(progress);
+        if (progress >= mMaxProgress && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 
+    /**
+     * Provide a custom view to be displayed. Only have effect with the CUSTOM_VIEW style.
+     * @param view Must not be null
+     * @return Current HUD
+     */
     public KProgressHUD setCustomView(View view) {
         if (view != null) {
             mCustomView = view;
@@ -102,23 +178,31 @@ public class KProgressHUD {
         return this;
     }
 
-    public KProgressHUD letActivityHandleBackPress(boolean isAllow) {
-        mIsActivityHandleBackPress = isAllow;
+    /**
+     * Specify whether this HUD can be cancelled by using back button (default is false)
+     * @return Current HUD
+     */
+    public KProgressHUD setCancellable(boolean isCancellable) {
+        mCancellable = isCancellable;
         return this;
     }
 
     public KProgressHUD show() {
-        if (!mProgressDialog.isShowing()) {
+        if (mProgressDialog != null && !mProgressDialog.isShowing()) {
             mProgressDialog.show();
         }
         return this;
     }
 
     public void dismiss() {
-        mProgressDialog.dismiss();
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 
     private class ProgressDialog extends Dialog {
+
+        private Progress mProgressView;
 
         public ProgressDialog(Context context) {
             super(context);
@@ -128,7 +212,7 @@ public class KProgressHUD {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
-            setContentView(R.layout.hud);
+            setContentView(R.layout.kprogresshud_hud);
 
             Window window = getWindow();
             window.setBackgroundDrawable(new ColorDrawable(0));
@@ -138,16 +222,9 @@ public class KProgressHUD {
             window.setAttributes(layoutParams);
 
             setCanceledOnTouchOutside(false);
+            setCancelable(mCancellable);
 
             initViews();
-        }
-
-        @Override
-        public void onBackPressed() {
-            if (mIsActivityHandleBackPress) {
-                dismiss();
-                ((Activity) getContext()).onBackPressed();
-            }
         }
 
         private void initViews() {
@@ -164,10 +241,19 @@ public class KProgressHUD {
                     indicatorView = view;
                     break;
                 case DETERMINATE:
+                    DeterminateView determinateView = new DeterminateView(getContext());
+                    indicatorView = determinateView;
+                    mProgressView = determinateView;
                     break;
                 case ANNULAR_DETERMINATE:
+                    AnnularView annularView = new AnnularView(getContext());
+                    indicatorView = annularView;
+                    mProgressView = annularView;
                     break;
                 case BAR_DETERMINATE:
+                    BarView barView = new BarView(getContext());
+                    indicatorView = barView;
+                    mProgressView = barView;
                     break;
                 case CUSTOM_VIEW:
                     if (mCustomView == null)
@@ -179,6 +265,10 @@ public class KProgressHUD {
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(wrapParam, wrapParam);
             containerFrame.addView(indicatorView, params);
 
+            if (mProgressView != null) {
+                mProgressView.setMax(mMaxProgress);
+            }
+
             if (mLabel != null) {
                 TextView labelText = (TextView) findViewById(R.id.label);
                 labelText.setText(mLabel);
@@ -188,6 +278,12 @@ public class KProgressHUD {
                 TextView detailsText = (TextView) findViewById(R.id.details_label);
                 detailsText.setText(mDetailsLabel);
                 detailsText.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public void setProgress(int progress) {
+            if (mProgressView != null) {
+                mProgressView.setProgress(progress);
             }
         }
     }

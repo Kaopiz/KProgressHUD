@@ -25,7 +25,7 @@
             android:id="@+id/label_indeterminate"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="With label"/>
+            android:text="With label and cancellable"/>
 
         <Button
             android:id="@+id/detail_indeterminate"
@@ -56,6 +56,18 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="Custom view"/>
+
+        <Button
+            android:id="@+id/dim_background"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Dim background"/>
+
+        <Button
+            android:id="@+id/custom_color_animate"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Custom color and speed"/>
     </LinearLayout>
 </ScrollView>
 
