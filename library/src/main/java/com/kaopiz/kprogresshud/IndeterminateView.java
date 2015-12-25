@@ -23,7 +23,7 @@ public class IndeterminateView extends ImageView {
     }
 
     private void init() {
-        setImageResource(R.drawable.spinner);
+        setImageResource(R.drawable.kprogresshud_spinner);
         mFrameTime = 1000 / 12;
         mUpdateViewRunnable = new Runnable() {
             @Override

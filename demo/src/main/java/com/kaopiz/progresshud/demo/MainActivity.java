@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.kaopiz.progresshud.R;
@@ -36,6 +37,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button customView = (Button) findViewById(R.id.custom_view);
         customView.setOnClickListener(this);
+
+        Button dimBackground = (Button) findViewById(R.id.dim_background);
+        dimBackground.setOnClickListener(this);
+
+        Button customColor = (Button) findViewById(R.id.custom_color_animate);
+        customColor.setOnClickListener(this);
     }
 
     @Override
@@ -43,16 +50,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         KProgressHUD hud = null;
         switch (v.getId()) {
             case R.id.indeterminate:
-                hud = KProgressHUD.create(MainActivity.this)
+                hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.INDETERMINATE);
                 break;
             case R.id.label_indeterminate:
-                hud = KProgressHUD.create(MainActivity.this)
+                hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.INDETERMINATE)
-                        .setLabel("Please wait");
+                        .setLabel("Please wait")
+                        .setCancellable(true);
                 break;
             case R.id.detail_indeterminate:
-                hud = KProgressHUD.create(MainActivity.this)
+                hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.INDETERMINATE)
                         .setLabel("Please wait")
                         .setDetailsLabel("Downloading data");
@@ -64,6 +72,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bar_determinate:
                 break;
             case R.id.custom_view:
+                ImageView imageView = new ImageView(this);
+                imageView.setImageResource(R.mipmap.ic_launcher);
+                hud = KProgressHUD.create(this)
+                        .setStyle(KProgressHUD.Style.CUSTOM_VIEW)
+                        .setCustomView(imageView)
+                        .setLabel("This is a custom view");
+                break;
+            case R.id.dim_background:
+                hud = KProgressHUD.create(this)
+                        .setStyle(KProgressHUD.Style.INDETERMINATE)
+                        .setDimAmount(0.6f);
+                break;
+            case R.id.custom_color_animate:
+                //noinspection deprecation
+                hud = KProgressHUD.create(this)
+                        .setStyle(KProgressHUD.Style.INDETERMINATE)
+                        .setWindowColor(getResources().getColor(R.color.colorPrimary))
+                        .setAnimateSpeed(2);
                 break;
         }
         if (hud != null) {

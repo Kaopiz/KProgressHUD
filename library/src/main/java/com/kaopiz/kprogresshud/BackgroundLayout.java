@@ -30,7 +30,7 @@ public class BackgroundLayout extends FrameLayout {
 
     @SuppressWarnings("deprecation")
     private void init() {
-        setBaseColor(getContext().getResources().getColor(R.color.default_window_color));
+        setBaseColor(getContext().getResources().getColor(R.color.kprogresshud_default_color));
         // Remove background, we will drawing background using base color
         setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
     }
