@@ -109,11 +109,20 @@ public class KProgressHUD {
     }
 
     /**
+     * Specify corner radius of the HUD (default is 15)
+     * @return Current HUD
+     */
+    public KProgressHUD setCornerRadius(float radius) {
+        mCornerRadius = radius;
+        return this;
+    }
+
+    /**
      * Change animate speed relative to default. Only have effect when use with indeterminate style
      * @param scale 1 is default, 2 means double speed, 0.5 means half speed..etc.
      * @return Current HUD
      */
-    public KProgressHUD setAnimateSpeed(int scale) {
+    public KProgressHUD setAnimationSpeed(int scale) {
         mAnimateSpeed = scale;
         return this;
     }
@@ -166,7 +175,7 @@ public class KProgressHUD {
     }
 
     /**
-     * Specify whether this HUD can be cancelled by using back button.
+     * Specify whether this HUD can be cancelled by using back button (default is false)
      * @return Current HUD
      */
     public KProgressHUD setCancellable(boolean isCancellable) {

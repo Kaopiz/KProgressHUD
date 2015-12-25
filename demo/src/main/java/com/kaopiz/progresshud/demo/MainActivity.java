@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.INDETERMINATE)
                         .setWindowColor(getResources().getColor(R.color.colorPrimary))
-                        .setAnimateSpeed(2);
+                        .setAnimationSpeed(2);
                 break;
         }
         if (hud != null) {
