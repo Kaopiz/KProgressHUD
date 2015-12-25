@@ -42,8 +42,18 @@ KProgressHUD.create(MainActivity.this)
 
 See [**Javadocs**](http://kaopiz.github.io/KProgressHUD/) for more information.
 
-## License
+## Contributing
+1. Fork it ( https://github.com/Kaopiz/KProgressHUD/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
+## Contributor
+* [tuanna-hsp](https://github.com/tuanna-hsp)
+* [nafuto](https://github.com/nafuto)
+
+## License
 ```
    Copyright 2015 Kaopiz Software Co., Ltd.
 
