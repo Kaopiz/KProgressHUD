@@ -16,7 +16,10 @@
 
 package com.kaopiz.kprogresshud;
 
-
+/**
+ * If a custom view implements this interface and be used with CUSTOM_VIEW style, its progress
+ * can be updated by calling setMax() and setProgress() on the HUD.
+ */
 public interface Progress {
     void setMax(int max);
     void setProgress(int progress);

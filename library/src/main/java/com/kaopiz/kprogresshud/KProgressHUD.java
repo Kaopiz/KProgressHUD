@@ -45,8 +45,10 @@ public class KProgressHUD {
     private String mDetailsLabel;
 
     private int mMaxProgress;
+    private boolean mIsAutoDismiss;
 
     private View mCustomView;
+    private boolean mIsCustomViewDeterminate;
 
     public KProgressHUD(Context context) {
         mProgressDialog = new ProgressDialog(context);
@@ -56,10 +58,12 @@ public class KProgressHUD {
         mWindowColor = context.getResources().getColor(R.color.kprogresshud_default_color);
         mAnimateSpeed = 1;
         mCornerRadius = 10;
+        mIsAutoDismiss = true;
     }
 
     /**
-     * Create a new HUD with default indeterminate style.
+     * Create a new HUD with default indeterminate style. Have same effect as the constructor.
+     * For convenient only.
      * @param context Activity context that the HUD bound to
      * @return An unique HUD instance
      */
@@ -149,11 +153,17 @@ public class KProgressHUD {
     }
 
     /**
-     * Set current progress. Only have effect when use with a determinate style
+     * Set current progress. Only have effect when use with a determinate style, or a custom
+     * view which implements Progress interface.
      */
     public void setProgress(int progress) {
+        if (mStyle == Style.INDETERMINATE)
+            return;
+        if (mStyle == Style.CUSTOM_VIEW && !mIsCustomViewDeterminate)
+            return;
+
         mProgressDialog.setProgress(progress);
-        if (progress >= mMaxProgress && mProgressDialog.isShowing()) {
+        if (mIsAutoDismiss && mProgressDialog.isShowing() && progress >= mMaxProgress) {
             mProgressDialog.dismiss();
         }
     }
@@ -166,6 +176,7 @@ public class KProgressHUD {
     public KProgressHUD setCustomView(View view) {
         if (view != null) {
             mCustomView = view;
+            mIsCustomViewDeterminate = view instanceof Progress;
         } else {
             throw new RuntimeException("Custom view must not be null!");
         }
@@ -178,6 +189,15 @@ public class KProgressHUD {
      */
     public KProgressHUD setCancellable(boolean isCancellable) {
         mCancellable = isCancellable;
+        return this;
+    }
+
+    /**
+     * Specify whether this HUD closes itself if progress reaches max. Default is true.
+     * @return Current HUD
+     */
+    public KProgressHUD setAutoDismiss(boolean isAutoDismiss) {
+        mIsAutoDismiss = isAutoDismiss;
         return this;
     }
 
@@ -253,6 +273,9 @@ public class KProgressHUD {
                     if (mCustomView == null)
                         throw new RuntimeException("You need to provide a custom view!");
                     indicatorView = mCustomView;
+                    if (mIsCustomViewDeterminate) {
+                        mProgressView = (Progress) mCustomView;
+                    }
                     break;
             }
             int wrapParam = ViewGroup.LayoutParams.WRAP_CONTENT;
