@@ -24,7 +24,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class PieView extends View implements Determinate {
+class PieView extends View implements Determinate {
     private Paint whitePaint;
     private Paint greyPaint;
     private RectF mBound;

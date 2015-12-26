@@ -21,7 +21,7 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-public class SpinView extends ImageView implements Indeterminate {
+class SpinView extends ImageView implements Indeterminate {
 
     private float mRotateDegrees;
     private int mFrameTime;

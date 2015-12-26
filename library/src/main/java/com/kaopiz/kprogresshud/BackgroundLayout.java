@@ -23,7 +23,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-public class BackgroundLayout extends FrameLayout {
+class BackgroundLayout extends FrameLayout {
 
     private float mCornerRadius;
     private Paint mPaint;

@@ -18,7 +18,7 @@ package com.kaopiz.kprogresshud;
 
 import android.content.Context;
 
-public class Helper {
+class Helper {
 
     private static float scale;
 
