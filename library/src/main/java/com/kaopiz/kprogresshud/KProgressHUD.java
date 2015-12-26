@@ -63,7 +63,7 @@ public class KProgressHUD {
     }
 
     /**
-     * Create a new HUD with default indeterminate style. Have same effect as the constructor.
+     * Create a new HUD. Have the same effect as the constructor.
      * For convenient only.
      * @param context Activity context that the HUD bound to
      * @return An unique HUD instance
