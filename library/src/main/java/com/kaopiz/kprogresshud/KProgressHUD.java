@@ -30,15 +30,17 @@ import android.widget.TextView;
 public class KProgressHUD {
 
     public enum Style {
-        INDETERMINATE, DETERMINATE, ANNULAR_DETERMINATE, BAR_DETERMINATE, CUSTOM_VIEW
+        SPIN_INDETERMINATE, PIE_DETERMINATE, ANNULAR_DETERMINATE, BAR_DETERMINATE
     }
 
+    // To avoid redundant APIs, all HUD functions will be forward to
+    // a custom dialog
     private ProgressDialog mProgressDialog;
-    private Style mStyle;
     private float mDimAmount;
     private int mWindowColor;
     private float mCornerRadius;
     private boolean mCancellable;
+    private Context mContext;
 
     private int mAnimateSpeed;
     private String mLabel;
@@ -47,18 +49,17 @@ public class KProgressHUD {
     private int mMaxProgress;
     private boolean mIsAutoDismiss;
 
-    private View mCustomView;
-    private boolean mIsCustomViewDeterminate;
-
     public KProgressHUD(Context context) {
+        mContext = context;
         mProgressDialog = new ProgressDialog(context);
-        mStyle = Style.INDETERMINATE;
         mDimAmount = 0;
         //noinspection deprecation
         mWindowColor = context.getResources().getColor(R.color.kprogresshud_default_color);
         mAnimateSpeed = 1;
         mCornerRadius = 10;
         mIsAutoDismiss = true;
+
+        setStyle(Style.SPIN_INDETERMINATE);
     }
 
     /**
@@ -72,13 +73,28 @@ public class KProgressHUD {
     }
 
     /**
-     * Specify the HUD style
-     * @param style One of the following KProgressHUD.Style values:
-     *              INDETERMINATE, DETERMINATE, ANNULAR_DETERMINATE, BAR_DETERMINATE, CUSTOM_VIEW
+     * Specify the HUD style (not needed if you use a custom view)
+     * @param style One of the KProgressHUD.Style values
      * @return Current HUD
      */
     public KProgressHUD setStyle(Style style) {
-        mStyle = style;
+        View view = null;
+        switch (style) {
+            case SPIN_INDETERMINATE:
+                view = new SpinView(mContext);
+                break;
+            case PIE_DETERMINATE:
+                view = new PieView(mContext);
+                break;
+            case ANNULAR_DETERMINATE:
+                view = new AnnularView(mContext);
+                break;
+            case BAR_DETERMINATE:
+                view = new BarView(mContext);
+                break;
+            // No custom view style here, because view will be added later
+        }
+        mProgressDialog.setView(view);
         return this;
     }
 
@@ -154,29 +170,20 @@ public class KProgressHUD {
 
     /**
      * Set current progress. Only have effect when use with a determinate style, or a custom
-     * view which implements Progress interface.
+     * view which implements Determinate interface.
      */
     public void setProgress(int progress) {
-        if (mStyle == Style.INDETERMINATE)
-            return;
-        if (mStyle == Style.CUSTOM_VIEW && !mIsCustomViewDeterminate)
-            return;
-
         mProgressDialog.setProgress(progress);
-        if (mIsAutoDismiss && mProgressDialog.isShowing() && progress >= mMaxProgress) {
-            mProgressDialog.dismiss();
-        }
     }
 
     /**
-     * Provide a custom view to be displayed. Only have effect with the CUSTOM_VIEW style.
+     * Provide a custom view to be displayed.
      * @param view Must not be null
      * @return Current HUD
      */
     public KProgressHUD setCustomView(View view) {
         if (view != null) {
-            mCustomView = view;
-            mIsCustomViewDeterminate = view instanceof Progress;
+            mProgressDialog.setView(view);
         } else {
             throw new RuntimeException("Custom view must not be null!");
         }
@@ -216,7 +223,9 @@ public class KProgressHUD {
 
     private class ProgressDialog extends Dialog {
 
-        private Progress mProgressView;
+        private Determinate mDeterminateView;
+        private Indeterminate mIndeterminateView;
+        private View mView;
 
         public ProgressDialog(Context context) {
             super(context);
@@ -247,43 +256,15 @@ public class KProgressHUD {
             background.setCornerRadius(mCornerRadius);
 
             FrameLayout containerFrame = (FrameLayout) findViewById(R.id.container);
-            View indicatorView = null;
-            switch (mStyle) {
-                case INDETERMINATE:
-                    IndeterminateView view = new IndeterminateView(getContext());
-                    view.setAnimationSpeed(mAnimateSpeed);
-                    indicatorView = view;
-                    break;
-                case DETERMINATE:
-                    DeterminateView determinateView = new DeterminateView(getContext());
-                    indicatorView = determinateView;
-                    mProgressView = determinateView;
-                    break;
-                case ANNULAR_DETERMINATE:
-                    AnnularView annularView = new AnnularView(getContext());
-                    indicatorView = annularView;
-                    mProgressView = annularView;
-                    break;
-                case BAR_DETERMINATE:
-                    BarView barView = new BarView(getContext());
-                    indicatorView = barView;
-                    mProgressView = barView;
-                    break;
-                case CUSTOM_VIEW:
-                    if (mCustomView == null)
-                        throw new RuntimeException("You need to provide a custom view!");
-                    indicatorView = mCustomView;
-                    if (mIsCustomViewDeterminate) {
-                        mProgressView = (Progress) mCustomView;
-                    }
-                    break;
-            }
             int wrapParam = ViewGroup.LayoutParams.WRAP_CONTENT;
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(wrapParam, wrapParam);
-            containerFrame.addView(indicatorView, params);
+            containerFrame.addView(mView, params);
 
-            if (mProgressView != null) {
-                mProgressView.setMax(mMaxProgress);
+            if (mDeterminateView != null) {
+                mDeterminateView.setMax(mMaxProgress);
+            }
+            if (mIndeterminateView != null) {
+                mIndeterminateView.setAnimationSpeed(mAnimateSpeed);
             }
 
             if (mLabel != null) {
@@ -299,8 +280,23 @@ public class KProgressHUD {
         }
 
         public void setProgress(int progress) {
-            if (mProgressView != null) {
-                mProgressView.setProgress(progress);
+            if (mDeterminateView != null) {
+                mDeterminateView.setProgress(progress);
+                if (mIsAutoDismiss && progress >= mMaxProgress) {
+                    dismiss();
+                }
+            }
+        }
+
+        public void setView(View view) {
+            if (view != null) {
+                if (view instanceof Determinate) {
+                    mDeterminateView = (Determinate) view;
+                }
+                if (view instanceof Indeterminate) {
+                    mIndeterminateView = (Indeterminate) view;
+                }
+                mView = view;
             }
         }
     }

@@ -24,23 +24,23 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class DeterminateView extends View implements Progress{
+class PieView extends View implements Determinate {
     private Paint whitePaint;
     private Paint greyPaint;
     private RectF mBound;
     private int mMax = 100;
     private int mProgress = 0;
-    public DeterminateView(Context context) {
+    public PieView(Context context) {
         super(context);
         init();
     }
 
-    public DeterminateView(Context context, AttributeSet attrs) {
+    public PieView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public DeterminateView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PieView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

@@ -17,10 +17,10 @@
 package com.kaopiz.kprogresshud;
 
 /**
- * If a custom view implements this interface and be used with CUSTOM_VIEW style, its progress
- * can be updated by calling setMax() and setProgress() on the HUD.
+ * If a view implements this interface passed to the HUD as a custom view, its animation
+ * speed can be change by calling setAnimationSpeed() on the HUD.
+ * This interface only provides convenience, how animation speed work depend on the view implementation.
  */
-public interface Progress {
-    void setMax(int max);
-    void setProgress(int progress);
+public interface Indeterminate {
+    void setAnimationSpeed(float scale);
 }

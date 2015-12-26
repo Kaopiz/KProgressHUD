@@ -31,7 +31,7 @@ The usage of KProgressHUD is pretty straight forward. You create the HUD, custom
 
 ```java
 KProgressHUD.create(MainActivity.this)
-	.setStyle(KProgressHUD.Style.INDETERMINATE)
+	.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
 	.setLabel("Please wait")
 	.setDetailsLabel("Downloading data");
 	.setCancellable(true)
@@ -40,7 +40,7 @@ KProgressHUD.create(MainActivity.this)
 	.show();
 ```
 
-See [**Javadocs**](http://kaopiz.github.io/KProgressHUD/) for more information.
+See [**Javadocs**](http://kaopiz.github.io/KProgressHUD/) or [**sample app**](https://github.com/Kaopiz/KProgressHUD/tree/master/demo/src/main) for more information.
 
 ## Contributing
 1. Fork it ( https://github.com/Kaopiz/KProgressHUD/fork )

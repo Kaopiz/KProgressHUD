@@ -25,7 +25,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class AnnularView extends View implements Progress{
+class AnnularView extends View implements Determinate {
     private Paint whitePaint;
     private Paint greyPaint;
     private RectF mBound;
