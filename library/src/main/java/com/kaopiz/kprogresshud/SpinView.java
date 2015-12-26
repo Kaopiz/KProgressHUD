@@ -21,19 +21,19 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-public class IndeterminateView extends ImageView {
+public class SpinView extends ImageView implements Indeterminate {
 
     private float mRotateDegrees;
     private int mFrameTime;
     private boolean mNeedToUpdateView;
     private Runnable mUpdateViewRunnable;
 
-    public IndeterminateView(Context context) {
+    public SpinView(Context context) {
         super(context);
         init();
     }
 
-    public IndeterminateView(Context context, AttributeSet attrs) {
+    public SpinView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -54,6 +54,7 @@ public class IndeterminateView extends ImageView {
         };
     }
 
+    @Override
     public void setAnimationSpeed(float scale) {
         mFrameTime = (int) (1000 / 12 / scale);
     }

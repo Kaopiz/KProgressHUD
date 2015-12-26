@@ -74,26 +74,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.indeterminate:
                 hud = KProgressHUD.create(this)
-                        .setStyle(KProgressHUD.Style.INDETERMINATE);
+                        .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE);
                 scheduleDismiss();
                 break;
             case R.id.label_indeterminate:
                 hud = KProgressHUD.create(this)
-                        .setStyle(KProgressHUD.Style.INDETERMINATE)
+                        .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                         .setLabel("Please wait")
                         .setCancellable(true);
                 scheduleDismiss();
                 break;
             case R.id.detail_indeterminate:
                 hud = KProgressHUD.create(this)
-                        .setStyle(KProgressHUD.Style.INDETERMINATE)
+                        .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                         .setLabel("Please wait")
                         .setDetailsLabel("Downloading data");
                 scheduleDismiss();
                 break;
             case R.id.determinate:
                 hud = KProgressHUD.create(MainActivity.this)
-                        .setStyle(KProgressHUD.Style.DETERMINATE)
+                        .setStyle(KProgressHUD.Style.PIE_DETERMINATE)
                         .setLabel("Please wait");
                 simulateProgressUpdate();
                 break;
@@ -113,21 +113,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ImageView imageView = new ImageView(this);
                 imageView.setImageResource(R.mipmap.ic_launcher);
                 hud = KProgressHUD.create(this)
-                        .setStyle(KProgressHUD.Style.CUSTOM_VIEW)
                         .setCustomView(imageView)
                         .setLabel("This is a custom view");
                 scheduleDismiss();
                 break;
             case R.id.dim_background:
                 hud = KProgressHUD.create(this)
-                        .setStyle(KProgressHUD.Style.INDETERMINATE)
+                        .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                         .setDimAmount(0.5f);
                 scheduleDismiss();
                 break;
             case R.id.custom_color_animate:
                 //noinspection deprecation
                 hud = KProgressHUD.create(this)
-                        .setStyle(KProgressHUD.Style.INDETERMINATE)
+                        .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                         .setWindowColor(getResources().getColor(R.color.colorPrimary))
                         .setAnimationSpeed(2);
                 scheduleDismiss();
