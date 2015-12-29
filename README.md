@@ -19,8 +19,18 @@ Android 2.3 and later
 ## Adding KProgressHUD to your project
 
 ### Gradle
+Include this in your module `build.gradle`
 
-Comming soon
+```
+repositories {
+    maven { url = 'https://jitpack.io' }
+}
+
+dependencies {
+    // Other dependencies
+    compile 'com.github.Kaopiz:KProgressHUD:1.0'
+}
+```
 
 ### Source code
 You can download and import the *library* folder as module to your project.
@@ -29,6 +39,7 @@ You can download and import the *library* folder as module to your project.
 
 The usage of KProgressHUD is pretty straight forward. You create the HUD, customize its style and show it on the UI thread. Then fire a background thread to work on long-running tasks. When done, call `dismiss()` to close it (if you use a determinate style, the HUD will automatically dismiss if progress reach its max).
 
+Indeterminate HUD
 ```java
 KProgressHUD.create(MainActivity.this)
 	.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -39,6 +50,27 @@ KProgressHUD.create(MainActivity.this)
 	.setDimAmount(0.5f)
 	.show();
 ```
+
+Determinate HUD
+```java
+KProgressHUD hud = KProgressHUD.create(MainActivity.this)
+					.setStyle(KProgressHUD.Style.ANNULAR_DETERMINATE)
+					.setLabel("Please wait")
+					.setMaxProgress(100)
+					.show();
+hud.setProgress(90);
+```
+
+Alternatively, you can create a custom view and pass to the HUD to display it.
+```java
+ImageView imageView = new ImageView(this);
+imageView.setImageResource(R.mipmap.ic_launcher);
+KProgressHUD.create(MainActivity.this)
+	.setCustomView(imageView)
+    .setLabel("This is a custom view")
+	.show();
+```
+The custom view can implement `Determinate` or `Indeterminate`, which make the HUD treats this view like the default determinate or indeterminate implementations, not required.
 
 See [**Javadocs**](http://kaopiz.github.io/KProgressHUD/) or [**sample app**](https://github.com/Kaopiz/KProgressHUD/tree/master/demo/src/main) for more information.
 
