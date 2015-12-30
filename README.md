@@ -34,7 +34,7 @@ dependencies {
 ```
 
 ### Source code
-You can download and import the *library* folder as module to your project.
+You can download and import the *kprogresshud* folder as module to your project.
 
 ## Usage
 
