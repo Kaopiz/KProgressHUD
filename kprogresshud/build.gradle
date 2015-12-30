@@ -1,0 +1,143 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+project.archivesBaseName = 'kprogresshud'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+}
+
+ext {
+    bintrayRepo = 'KProgressHUD'
+    bintrayName = 'kprogresshud'
+
+    publishedGroupId = 'com.kaopiz'
+    libraryName = 'kprogresshud'
+    artifact = 'kprogresshud'
+
+    libraryDescription = 'A customizable ProgressHUD for Android'
+
+    siteUrl = 'http://kaopiz.github.io/KProgressHUD/'
+    gitUrl = 'https://github.com/Kaopiz/KProgressHUD'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'kaopiz'
+    developerName = 'Kaopiz Software Co., Ltd.'
+    developerEmail = 'contact@kaopiz.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+group = publishedGroupId
+version = libraryVersion
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// Bintray
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        userOrg = 'kaopiz'
+        desc = libraryDescription
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = libraryDescription
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("bintray.gpg.password")
+                //Optional. The passphrase for GPG signing'
+            }
+        }
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                groupId 'com.kaopiz'
+                artifactId 'kprogresshud'
+
+                // Add your description here
+                name libraryName
+                description libraryDescription
+                url siteUrl
+
+                // Set your license
+                licenses {
+                    license {
+                        name licenseName
+                        url licenseUrl
+                    }
+                }
+                developers {
+                    developer {
+                        id developerId
+                        name developerName
+                        email developerEmail
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+
+                }
+            }
+        }
+    }
+}
