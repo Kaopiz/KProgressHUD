@@ -50,7 +50,7 @@ class PieView extends View implements Determinate {
     private void init(){
         mWhitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mWhitePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mWhitePaint.setStrokeWidth(Helper.dpToPixel(2, getContext()));
+        mWhitePaint.setStrokeWidth(Helper.dpToPixel(0.1f, getContext()));
         mWhitePaint.setColor(Color.WHITE);
 
         mGreyPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -73,7 +73,8 @@ class PieView extends View implements Determinate {
         super.onDraw(canvas);
         float mAngle = mProgress * 360f / mMax;
         canvas.drawArc(mBound, 270, mAngle, true, mWhitePaint);
-        canvas.drawArc(mBound, 270 + mAngle, 360 - mAngle, false, mGreyPaint);
+        int padding = Helper.dpToPixel(4, getContext());
+        canvas.drawCircle(getWidth()/2, getHeight()/2, getWidth()/2-padding, mGreyPaint);
     }
 
     @Override
