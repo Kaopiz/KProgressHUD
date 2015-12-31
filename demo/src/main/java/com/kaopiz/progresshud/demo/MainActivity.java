@@ -159,6 +159,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 hud.dismiss();
             }
-        }, 4000);
+        }, 2000);
     }
 }
