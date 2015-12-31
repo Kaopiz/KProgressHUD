@@ -1,8 +1,11 @@
 # KProgressHUD
 [![Apache License](https://img.shields.io/badge/license-Apache-blue.svg)](http://opensource.org/licenses/Apache-2.0)
+[ ![Download](https://api.bintray.com/packages/kaopiz/KProgressHUD/KProgressHUD/images/download.svg) ](https://bintray.com/kaopiz/KProgressHUD/KProgressHUD/_latestVersion)
 
 An implement of ProgressHUD for Android, similar to MBProgressHUD, SVProgressHUD.
 Inspired by [MBProgressHUD](https://github.com/jdg/MBProgressHUD) for iOS.
+
+![](https://raw.githubusercontent.com/Kaopiz/KProgressHUD/master/demo/screenshots/screencast.gif)
 
 [![](https://raw.githubusercontent.com/Kaopiz/KProgressHUD/master/demo/screenshoots/thumb01.png)](https://github.com/Kaopiz/KProgressHUD/blob/master/demo/screenshoots/image01.png?raw=true)
 [![](https://raw.githubusercontent.com/Kaopiz/KProgressHUD/master/demo/screenshoots/thumb02.png)](https://github.com/Kaopiz/KProgressHUD/blob/master/demo/screenshoots/image02.png?raw=true)
@@ -23,13 +26,9 @@ Android 2.3 and later
 Include this in your module `build.gradle`
 
 ```
-repositories {
-    maven { url = 'https://jitpack.io' }
-}
-
 dependencies {
     // Other dependencies
-    compile 'com.github.Kaopiz:KProgressHUD:1.0'
+    compile 'com.kaopiz:kprogresshud:1.0.0'
 }
 ```
 
