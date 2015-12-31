@@ -21,7 +21,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -55,7 +54,7 @@ class AnnularView extends View implements Determinate {
         greyPaint = new Paint();
         greyPaint.setStyle(Paint.Style.STROKE);
         greyPaint.setStrokeWidth(Helper.dpToPixel(3, getContext()));
-        greyPaint.setColor(ContextCompat.getColor(context, R.color.kprogresshud_grey_color));
+        greyPaint.setColor(context.getResources().getColor(R.color.kprogresshud_grey_color));
     }
 
     @Override
