@@ -42,7 +42,7 @@ apply plugin: 'com.jfrog.bintray'
 
 ext {
     bintrayRepo = 'KProgressHUD'
-    bintrayName = 'kprogresshud'
+    bintrayName = 'KProgressHUD'
 
     publishedGroupId = 'com.kaopiz'
     libraryName = 'kprogresshud'
