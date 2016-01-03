@@ -1,6 +1,7 @@
 # KProgressHUD
 [![Apache License](https://img.shields.io/badge/license-Apache-blue.svg)](http://opensource.org/licenses/Apache-2.0)
 [ ![Download](https://api.bintray.com/packages/kaopiz/KProgressHUD/KProgressHUD/images/download.svg) ](https://bintray.com/kaopiz/KProgressHUD/KProgressHUD/_latestVersion)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-KProgressHUD-green.svg?style=true)](https://android-arsenal.com/details/1/2975)
 
 An implement of ProgressHUD for Android, similar to MBProgressHUD, SVProgressHUD.
 Inspired by [MBProgressHUD](https://github.com/jdg/MBProgressHUD) for iOS.
