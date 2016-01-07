@@ -209,10 +209,14 @@ public class KProgressHUD {
     }
 
     public KProgressHUD show() {
-        if (mProgressDialog != null && !mProgressDialog.isShowing()) {
+        if (!isShowing()) {
             mProgressDialog.show();
         }
         return this;
+    }
+
+    public boolean isShowing() {
+        return mProgressDialog != null && mProgressDialog.isShowing();
     }
 
     public void dismiss() {
