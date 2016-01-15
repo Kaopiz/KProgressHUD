@@ -87,6 +87,7 @@ See [**Javadocs**](http://kaopiz.github.io/KProgressHUD/) or [**sample app**](ht
 ## Contributor
 * [tuanna-hsp](https://github.com/tuanna-hsp)
 * [nafuto](https://github.com/nafuto)
+* [iamzhouu](https://github.com/iamzhouu)
 
 ## License
 ```
