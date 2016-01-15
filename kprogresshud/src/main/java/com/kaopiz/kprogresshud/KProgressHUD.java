@@ -73,6 +73,46 @@ public class KProgressHUD {
     }
 
     /**
+     * Create a new HUD. Specify the HUD style of {@link Style.SPIN_INDETERMINATE}. For convenient only.
+     *
+     * @param context Activity context that the HUD bound to
+     * @return An unique HUD instance
+     */
+    public static KProgressHUD createForSpin(Context context) {
+        return new KProgressHUD(context).setStyle(Style.SPIN_INDETERMINATE);
+    }
+
+    /**
+     * Create a new HUD. Specify the HUD style of {@link Style.PIE_DETERMINATE}. For convenient only.
+     *
+     * @param context Activity context that the HUD bound to
+     * @return An unique HUD instance
+     */
+    public static KProgressHUD createForPie(Context context) {
+        return new KProgressHUD(context).setStyle(Style.PIE_DETERMINATE);
+    }
+
+    /**
+     * Create a new HUD. Specify the HUD style of {@link Style.BAR_DETERMINATE}. For convenient only.
+     *
+     * @param context Activity context that the HUD bound to
+     * @return An unique HUD instance
+     */
+    public static KProgressHUD createForBar(Context context) {
+        return new KProgressHUD(context).setStyle(Style.BAR_DETERMINATE);
+    }
+
+    /**
+     * Create a new HUD. Specify the HUD style of {@link Style.ANNULAR_DETERMINATE}. For convenient only.
+     *
+     * @param context Activity context that the HUD bound to
+     * @return An unique HUD instance
+     */
+    public static KProgressHUD createForAnnular(Context context) {
+        return new KProgressHUD(context).setStyle(Style.ANNULAR_DETERMINATE);
+    }
+
+    /**
      * Specify the HUD style (not needed if you use a custom view)
      * @param style One of the KProgressHUD.Style values
      * @return Current HUD
