@@ -53,7 +53,7 @@ ext {
     siteUrl = 'http://kaopiz.github.io/KProgressHUD/'
     gitUrl = 'https://github.com/Kaopiz/KProgressHUD'
 
-    libraryVersion = '1.0.2'
+    libraryVersion = '1.0.3'
 
     developerId = 'kaopiz'
     developerName = 'Kaopiz Software Co., Ltd.'

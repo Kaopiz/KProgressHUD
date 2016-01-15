@@ -56,11 +56,10 @@ class BackgroundLayout extends FrameLayout {
     }
 
     public void setBaseColor(int color) {
-        mPaint = new Paint();
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         //noinspection deprecation
         mPaint.setColor(color);
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setAntiAlias(true);
     }
 
     @Override
