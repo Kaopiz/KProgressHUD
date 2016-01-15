@@ -72,6 +72,17 @@ public class KProgressHUD {
         return new KProgressHUD(context);
     }
 
+  /**
+   * Create a new HUD. specify the HUD style (if you use a custom view, you need {@code KProgressHUD.create(Context context)}).
+   *
+   * @param context Activity context that the HUD bound to
+   * @param style One of the KProgressHUD.Style values
+   * @return An unique HUD instance
+   */
+    public static KProgressHUD create(Context context, Style style) {
+        return new KProgressHUD(context).setStyle(style);
+    }
+
     /**
      * Specify the HUD style (not needed if you use a custom view)
      * @param style One of the KProgressHUD.Style values

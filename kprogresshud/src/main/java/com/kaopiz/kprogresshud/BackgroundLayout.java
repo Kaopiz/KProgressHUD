@@ -60,6 +60,7 @@ class BackgroundLayout extends FrameLayout {
         //noinspection deprecation
         mPaint.setColor(color);
         mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setAntiAlias(true);
     }
 
     @Override
