@@ -31,7 +31,7 @@ Include this in your module `build.gradle`
 ```
 dependencies {
     // Other dependencies
-    compile 'com.kaopiz:kprogresshud:1.0.3'
+    compile 'com.kaopiz:kprogresshud:1.0.4'
 }
 ```
 
@@ -88,6 +88,7 @@ See [**Javadocs**](http://kaopiz.github.io/KProgressHUD/) or [**sample app**](ht
 * [tuanna-hsp](https://github.com/tuanna-hsp)
 * [nafuto](https://github.com/nafuto)
 * [iamzhouu](https://github.com/iamzhouu)
+* [Ctrl-Space](https://github.com/Ctrl-Space)
 
 ## License
 ```
