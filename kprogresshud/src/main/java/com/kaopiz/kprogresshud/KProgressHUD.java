@@ -158,6 +158,9 @@ public class KProgressHUD {
      */
     public KProgressHUD setLabel(String label) {
         mLabel = label;
+		if (mProgressDialog != null && !mProgressDialog.isShowing()) {
+            mProgressDialog.setLabel(mLabel);
+        }
         return this;
     }
 
@@ -167,6 +170,9 @@ public class KProgressHUD {
      */
     public KProgressHUD setDetailsLabel(String detailsLabel) {
         mDetailsLabel = detailsLabel;
+		if (mProgressDialog != null && !mProgressDialog.isShowing()) {
+            mProgressDialog.setDetailsLabel(mDetailsLabel);
+        }
         return this;
     }
 
@@ -241,7 +247,9 @@ public class KProgressHUD {
         private Determinate mDeterminateView;
         private Indeterminate mIndeterminateView;
         private View mView;
-
+		private TextView labelText;
+        private TextView detailsText;
+		
         public ProgressDialog(Context context) {
             super(context);
         }
@@ -282,15 +290,19 @@ public class KProgressHUD {
                 mIndeterminateView.setAnimationSpeed(mAnimateSpeed);
             }
 
+            labelText = (TextView) findViewById(com.kaopiz.kprogresshud.R.id.label);
             if (mLabel != null) {
-                TextView labelText = (TextView) findViewById(R.id.label);
                 labelText.setText(mLabel);
                 labelText.setVisibility(View.VISIBLE);
+            } else {
+                labelText.setVisibility(View.GONE);
             }
+            detailsText = (TextView) findViewById(com.kaopiz.kprogresshud.R.id.details_label);
             if (mDetailsLabel != null) {
-                TextView detailsText = (TextView) findViewById(R.id.details_label);
                 detailsText.setText(mDetailsLabel);
                 detailsText.setVisibility(View.VISIBLE);
+            } else {
+                detailsText.setVisibility(View.GONE);
             }
         }
 
@@ -314,5 +326,27 @@ public class KProgressHUD {
                 mView = view;
             }
         }
+		        public void setLabel(String mLabel) {
+            if (labelText != null) {
+                if (mLabel != null) {
+                    labelText.setText(mLabel);
+                    labelText.setVisibility(View.VISIBLE);
+                } else {
+                    labelText.setVisibility(View.GONE);
+                }
+            }
+        }
+
+        public void setDetailsLabel(String mDetailsLabel) {
+            if (detailsText != null) {
+                if (mDetailsLabel != null) {
+                    detailsText.setText(mDetailsLabel);
+                    detailsText.setVisibility(View.VISIBLE);
+                } else {
+                    detailsText.setVisibility(View.GONE);
+                }
+            }
+        }
+		
     }
 }
