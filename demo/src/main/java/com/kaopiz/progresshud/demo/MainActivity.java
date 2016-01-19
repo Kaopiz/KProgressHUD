@@ -100,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.annular_determinate:
                 hud = KProgressHUD.create(MainActivity.this)
                         .setStyle(KProgressHUD.Style.ANNULAR_DETERMINATE)
-                        .setLabel("Please wait");
+                        .setLabel("Please wait")
+                        .setDetailsLabel("Downloading data");
                 simulateProgressUpdate();
                 break;
             case R.id.bar_determinate:
@@ -145,6 +146,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 currentProgress += 1;
                 hud.setProgress(currentProgress);
+                if (currentProgress == 80) {
+                    hud.setLabel("Almost finish...");
+                }
                 if (currentProgress < 100) {
                     handler.postDelayed(this, 50);
                 }
