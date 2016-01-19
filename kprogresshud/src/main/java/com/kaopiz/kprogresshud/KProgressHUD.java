@@ -39,12 +39,9 @@ public class KProgressHUD {
     private float mDimAmount;
     private int mWindowColor;
     private float mCornerRadius;
-    private boolean mCancellable;
     private Context mContext;
 
     private int mAnimateSpeed;
-    private String mLabel;
-    private String mDetailsLabel;
 
     private int mMaxProgress;
     private boolean mIsAutoDismiss;
@@ -123,6 +120,17 @@ public class KProgressHUD {
     }
 
     /**
+     * Set HUD size. If not the HUD view will use WRAP_CONTENT instead
+     * @param width in dp
+     * @param height in dp
+     * @return Current HUD
+     */
+    public KProgressHUD setSize(int width, int height) {
+        mProgressDialog.setSize(width, height);
+        return this;
+    }
+
+    /**
      * Specify the HUD background color
      * @param color ARGB color
      * @return Current HUD
@@ -157,10 +165,7 @@ public class KProgressHUD {
      * @return Current HUD
      */
     public KProgressHUD setLabel(String label) {
-        mLabel = label;
-		if (mProgressDialog != null && !mProgressDialog.isShowing()) {
-            mProgressDialog.setLabel(mLabel);
-        }
+        mProgressDialog.setLabel(label);
         return this;
     }
 
@@ -169,10 +174,7 @@ public class KProgressHUD {
      * @return Current HUD
      */
     public KProgressHUD setDetailsLabel(String detailsLabel) {
-        mDetailsLabel = detailsLabel;
-		if (mProgressDialog != null && !mProgressDialog.isShowing()) {
-            mProgressDialog.setDetailsLabel(mDetailsLabel);
-        }
+        mProgressDialog.setDetailsLabel(detailsLabel);
         return this;
     }
 
@@ -212,7 +214,7 @@ public class KProgressHUD {
      * @return Current HUD
      */
     public KProgressHUD setCancellable(boolean isCancellable) {
-        mCancellable = isCancellable;
+        mProgressDialog.setCancelable(isCancellable);
         return this;
     }
 
@@ -247,8 +249,13 @@ public class KProgressHUD {
         private Determinate mDeterminateView;
         private Indeterminate mIndeterminateView;
         private View mView;
-		private TextView labelText;
-        private TextView detailsText;
+		private TextView mLabelText;
+        private TextView mDetailsText;
+        private String mLabel;
+        private String mDetailsLabel;
+        private FrameLayout mCustomViewContainer;
+        private BackgroundLayout mBackgroundLayout;
+        private int mWidth, mHeight;
 		
         public ProgressDialog(Context context) {
             super(context);
@@ -268,20 +275,20 @@ public class KProgressHUD {
             window.setAttributes(layoutParams);
 
             setCanceledOnTouchOutside(false);
-            setCancelable(mCancellable);
 
             initViews();
         }
 
         private void initViews() {
-            BackgroundLayout background = (BackgroundLayout) findViewById(R.id.background);
-            background.setBaseColor(mWindowColor);
-            background.setCornerRadius(mCornerRadius);
+            mBackgroundLayout = (BackgroundLayout) findViewById(R.id.background);
+            mBackgroundLayout.setBaseColor(mWindowColor);
+            mBackgroundLayout.setCornerRadius(mCornerRadius);
+            if (mWidth != 0) {
+                updateBackgroundSize();
+            }
 
-            FrameLayout containerFrame = (FrameLayout) findViewById(R.id.container);
-            int wrapParam = ViewGroup.LayoutParams.WRAP_CONTENT;
-            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(wrapParam, wrapParam);
-            containerFrame.addView(mView, params);
+            mCustomViewContainer = (FrameLayout) findViewById(R.id.container);
+            addViewToFrame(mView);
 
             if (mDeterminateView != null) {
                 mDeterminateView.setMax(mMaxProgress);
@@ -290,20 +297,34 @@ public class KProgressHUD {
                 mIndeterminateView.setAnimationSpeed(mAnimateSpeed);
             }
 
-            labelText = (TextView) findViewById(com.kaopiz.kprogresshud.R.id.label);
+            mLabelText = (TextView) findViewById(com.kaopiz.kprogresshud.R.id.label);
             if (mLabel != null) {
-                labelText.setText(mLabel);
-                labelText.setVisibility(View.VISIBLE);
+                mLabelText.setText(mLabel);
+                mLabelText.setVisibility(View.VISIBLE);
             } else {
-                labelText.setVisibility(View.GONE);
+                mLabelText.setVisibility(View.GONE);
             }
-            detailsText = (TextView) findViewById(com.kaopiz.kprogresshud.R.id.details_label);
+            mDetailsText = (TextView) findViewById(com.kaopiz.kprogresshud.R.id.details_label);
             if (mDetailsLabel != null) {
-                detailsText.setText(mDetailsLabel);
-                detailsText.setVisibility(View.VISIBLE);
+                mDetailsText.setText(mDetailsLabel);
+                mDetailsText.setVisibility(View.VISIBLE);
             } else {
-                detailsText.setVisibility(View.GONE);
+                mDetailsText.setVisibility(View.GONE);
             }
+        }
+
+        private void addViewToFrame(View view) {
+            if (view == null) return;
+            int wrapParam = ViewGroup.LayoutParams.WRAP_CONTENT;
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(wrapParam, wrapParam);
+            mCustomViewContainer.addView(view, params);
+        }
+
+        private void updateBackgroundSize() {
+            ViewGroup.LayoutParams params = mBackgroundLayout.getLayoutParams();
+            params.width = Helper.dpToPixel(mWidth, getContext());
+            params.height = Helper.dpToPixel(mHeight, getContext());
+            mBackgroundLayout.setLayoutParams(params);
         }
 
         public void setProgress(int progress) {
@@ -324,29 +345,43 @@ public class KProgressHUD {
                     mIndeterminateView = (Indeterminate) view;
                 }
                 mView = view;
-            }
-        }
-		        public void setLabel(String mLabel) {
-            if (labelText != null) {
-                if (mLabel != null) {
-                    labelText.setText(mLabel);
-                    labelText.setVisibility(View.VISIBLE);
-                } else {
-                    labelText.setVisibility(View.GONE);
+                if (isShowing()) {
+                    mCustomViewContainer.removeAllViews();
+                    addViewToFrame(view);
                 }
             }
         }
 
-        public void setDetailsLabel(String mDetailsLabel) {
-            if (detailsText != null) {
-                if (mDetailsLabel != null) {
-                    detailsText.setText(mDetailsLabel);
-                    detailsText.setVisibility(View.VISIBLE);
+        public void setLabel(String label) {
+            mLabel = label;
+            if (mLabelText != null) {
+                if (label != null) {
+                    mLabelText.setText(label);
+                    mLabelText.setVisibility(View.VISIBLE);
                 } else {
-                    detailsText.setVisibility(View.GONE);
+                    mLabelText.setVisibility(View.GONE);
                 }
             }
         }
-		
+
+        public void setDetailsLabel(String detailsLabel) {
+            mDetailsLabel = detailsLabel;
+            if (mDetailsText != null) {
+                if (detailsLabel != null) {
+                    mDetailsText.setText(detailsLabel);
+                    mDetailsText.setVisibility(View.VISIBLE);
+                } else {
+                    mDetailsText.setVisibility(View.GONE);
+                }
+            }
+        }
+
+        public void setSize(int width, int height) {
+            mWidth = width;
+            mHeight = height;
+            if (mBackgroundLayout != null) {
+                updateBackgroundSize();
+            }
+        }
     }
 }

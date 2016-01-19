@@ -16,18 +16,17 @@
 
 package com.kaopiz.kprogresshud;
 
+import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
-class BackgroundLayout extends FrameLayout {
+class BackgroundLayout extends LinearLayout {
 
     private float mCornerRadius;
-    private Paint mPaint;
-    private RectF mRect;
+    private int mBackgroundColor;
 
     public BackgroundLayout(Context context) {
         super(context);
@@ -39,6 +38,7 @@ class BackgroundLayout extends FrameLayout {
         init();
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public BackgroundLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
@@ -46,31 +46,30 @@ class BackgroundLayout extends FrameLayout {
 
     @SuppressWarnings("deprecation")
     private void init() {
-        setBaseColor(getContext().getResources().getColor(R.color.kprogresshud_default_color));
-        // Remove background, we will drawing background using base color
-        setBackgroundColor(getContext().getResources().getColor(android.R.color.transparent));
+        int color = getContext().getResources().getColor(R.color.kprogresshud_default_color);
+        initBackground(color, mCornerRadius);
+    }
+
+    private void initBackground(int color, float cornerRadius) {
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.RECTANGLE);
+        drawable.setColor(color);
+        drawable.setCornerRadius(cornerRadius);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            setBackground(drawable);
+        } else {
+            //noinspection deprecation
+            setBackgroundDrawable(drawable);
+        }
     }
 
     public void setCornerRadius(float radius) {
         mCornerRadius = Helper.dpToPixel(radius, getContext());
+        initBackground(mBackgroundColor, mCornerRadius);
     }
 
     public void setBaseColor(int color) {
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        //noinspection deprecation
-        mPaint.setColor(color);
-        mPaint.setStyle(Paint.Style.FILL);
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        mRect = new RectF(0, 0, w, h);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.drawRoundRect(mRect, mCornerRadius, mCornerRadius, mPaint);
+        mBackgroundColor = color;
+        initBackground(mBackgroundColor, mCornerRadius);
     }
 }
