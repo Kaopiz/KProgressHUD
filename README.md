@@ -31,7 +31,7 @@ Include this in your module `build.gradle`
 ```
 dependencies {
     // Other dependencies
-    compile 'com.kaopiz:kprogresshud:1.0.4'
+    compile 'com.kaopiz:kprogresshud:1.0.5'
 }
 ```
 
