@@ -20,6 +20,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -272,6 +273,7 @@ public class KProgressHUD {
             window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             WindowManager.LayoutParams layoutParams = window.getAttributes();
             layoutParams.dimAmount = mDimAmount;
+            layoutParams.gravity = Gravity.CENTER;
             window.setAttributes(layoutParams);
 
             setCanceledOnTouchOutside(false);
