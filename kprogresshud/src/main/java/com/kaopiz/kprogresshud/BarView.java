@@ -32,7 +32,6 @@ class BarView extends View implements Determinate {
     private RectF mInBound;
     private int mMax = 100;
     private int mProgress = 0;
-    private float mRadius;
     private float mBoundGap;
 
     public BarView(Context context) {
@@ -64,7 +63,6 @@ class BarView extends View implements Determinate {
         mInBound = new RectF(mBoundGap, mBoundGap,
                 (getWidth() - mBoundGap) * mProgress / mMax, getHeight() - mBoundGap);
 
-        mRadius = Helper.dpToPixel(10, getContext());
         mBound = new RectF();
     }
 
@@ -78,8 +76,8 @@ class BarView extends View implements Determinate {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRoundRect(mBound, mRadius, mRadius, mOuterPaint);
-        canvas.drawRoundRect(mInBound, mRadius, mRadius, mInnerPaint);
+        canvas.drawRoundRect(mBound, mBound.height()/2, mBound.height()/2, mOuterPaint);
+        canvas.drawRoundRect(mInBound, mInBound.height()/2, mInBound.height()/2, mInnerPaint);
     }
 
     @Override
