@@ -22,6 +22,7 @@
 
 package com.kaopiz.progresshud.demo;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -112,7 +113,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.custom_view:
                 ImageView imageView = new ImageView(this);
-                imageView.setImageResource(R.mipmap.ic_launcher);
+                imageView.setBackgroundResource(R.drawable.spin_animation);
+                AnimationDrawable drawable = (AnimationDrawable) imageView.getBackground();
+                drawable.start();
                 hud = KProgressHUD.create(this)
                         .setCustomView(imageView)
                         .setLabel("This is a custom view");
