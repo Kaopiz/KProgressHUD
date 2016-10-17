@@ -67,11 +67,13 @@ hud.setProgress(90);
 Alternatively, you can create a custom view and pass to the HUD to display it.
 ```java
 ImageView imageView = new ImageView(this);
-imageView.setImageResource(R.mipmap.ic_launcher);
+imageView.setBackgroundResource(R.drawable.spin_animation);
+AnimationDrawable drawable = (AnimationDrawable) imageView.getBackground();
+drawable.start();
 KProgressHUD.create(MainActivity.this)
-	.setCustomView(imageView)
-    .setLabel("This is a custom view")
-	.show();
+   .setCustomView(imageView)
+   .setLabel("This is a custom view")
+   .show();
 ```
 The custom view can implement `Determinate` or `Indeterminate`, which make the HUD treats this view like the default determinate or indeterminate implementations, not required.
 
