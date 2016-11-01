@@ -47,7 +47,7 @@ Indeterminate HUD
 KProgressHUD.create(MainActivity.this)
 	.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
 	.setLabel("Please wait")
-	.setDetailsLabel("Downloading data");
+	.setDetailsLabel("Downloading data")
 	.setCancellable(true)
 	.setAnimationSpeed(2)
 	.setDimAmount(0.5f)
