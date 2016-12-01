@@ -93,4 +93,11 @@ class AnnularView extends View implements Determinate {
         mProgress = progress;
         invalidate();
     }
+
+    @Override
+    public void setColor(int color) {
+        mWhitePaint.setColor(color);
+        mGreyPaint.setColor(color);
+        invalidate();
+    }
 }

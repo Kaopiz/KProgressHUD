@@ -21,6 +21,6 @@ package com.kaopiz.kprogresshud;
  * speed can be change by calling setAnimationSpeed() on the HUD.
  * This interface only provides convenience, how animation speed work depends on the view implementation.
  */
-public interface Indeterminate {
+interface Indeterminate extends ProgressView {
     void setAnimationSpeed(float scale);
 }

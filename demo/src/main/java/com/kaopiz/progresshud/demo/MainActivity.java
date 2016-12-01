@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE);
                 scheduleDismiss();
+
                 break;
             case R.id.label_indeterminate:
                 hud = KProgressHUD.create(this)
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                         .setWindowColor(getResources().getColor(R.color.colorPrimary))
+                        .setProgressViewColor(getResources().getColor(R.color.colorAccent))
                         .setAnimationSpeed(2);
                 scheduleDismiss();
                 break;

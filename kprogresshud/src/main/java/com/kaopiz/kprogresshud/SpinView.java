@@ -18,15 +18,18 @@ package com.kaopiz.kprogresshud;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-class SpinView extends ImageView implements Indeterminate {
+public class SpinView extends ImageView implements Indeterminate {
 
     private float mRotateDegrees;
     private int mFrameTime;
     private boolean mNeedToUpdateView;
     private Runnable mUpdateViewRunnable;
+    private int mColor = Color.WHITE;
 
     public SpinView(Context context) {
         super(context);
@@ -40,6 +43,7 @@ class SpinView extends ImageView implements Indeterminate {
 
     private void init() {
         setImageResource(R.drawable.kprogresshud_spinner);
+        initImageResource();
         mFrameTime = 1000 / 12;
         mUpdateViewRunnable = new Runnable() {
             @Override
@@ -76,5 +80,25 @@ class SpinView extends ImageView implements Indeterminate {
     protected void onDetachedFromWindow() {
         mNeedToUpdateView = false;
         super.onDetachedFromWindow();
+    }
+
+    @Override
+    public void setColor(int color) {
+        this.mColor = color;
+        initImageResource();
+    }
+
+    private void initImageResource(){
+        if (hasImageResource())
+            applyColorFilter();
+    }
+
+    private boolean hasImageResource(){
+        return getDrawable() != null;
+    }
+
+    private void applyColorFilter(){
+        getDrawable().setColorFilter(mColor, PorterDuff.Mode.SRC_IN);
+        invalidate();
     }
 }

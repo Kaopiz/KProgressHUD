@@ -100,4 +100,11 @@ class BarView extends View implements Determinate {
                 (getWidth() - mBoundGap) * mProgress / mMax, getHeight() - mBoundGap);
         invalidate();
     }
+
+    @Override
+    public void setColor(int color) {
+        mOuterPaint.setColor(color);
+        mInnerPaint.setColor(color);
+        invalidate();
+    }
 }
