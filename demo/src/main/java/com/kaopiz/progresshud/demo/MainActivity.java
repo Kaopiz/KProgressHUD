@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button detailIndeterminate = (Button) findViewById(R.id.detail_indeterminate);
         detailIndeterminate.setOnClickListener(this);
 
+        Button graceIndeterminate = (Button) findViewById(R.id.grace_indeterminate);
+        graceIndeterminate.setOnClickListener(this);
+
         Button determinate = (Button) findViewById(R.id.determinate);
         determinate.setOnClickListener(this);
 
@@ -90,6 +93,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                         .setLabel("Please wait")
                         .setDetailsLabel("Downloading data");
+                scheduleDismiss();
+                break;
+            case R.id.grace_indeterminate:
+                hud = KProgressHUD.create(this)
+                        .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                        .setGraceTime(1000);
                 scheduleDismiss();
                 break;
             case R.id.determinate:
