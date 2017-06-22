@@ -31,7 +31,7 @@ Include this in your module `build.gradle`
 ```
 dependencies {
     // Other dependencies
-    compile 'com.kaopiz:kprogresshud:1.0.5'
+    compile 'com.kaopiz:kprogresshud:1.1.0'
 }
 ```
 
@@ -40,7 +40,7 @@ You can download and import the `kprogresshud` folder as module to your project.
 
 ## Usage
 
-The usage of KProgressHUD is pretty straight forward. You create the HUD, customize its style and show it on the UI thread. Then fire a background thread to work on long-running tasks. When done, call `dismiss()` to close it (if you use a determinate style, the HUD will automatically dismiss if progress reach its max).
+The usage of KProgressHUD is pretty straight forward. You create the HUD, customize its style and show it on the UI thread. Then fire a background thread to work on long-running tasks. When done, call dismiss() to close it (if you use a determinate style, the HUD will automatically dismiss if progress reaches its max).
 
 Indeterminate HUD
 ```java
@@ -75,7 +75,7 @@ KProgressHUD.create(MainActivity.this)
 ```
 The custom view can implement `Determinate` or `Indeterminate`, which make the HUD treats this view like the default determinate or indeterminate implementations, not required.
 
-See [**Javadocs**](http://kaopiz.github.io/KProgressHUD/) or [**sample app**](https://github.com/Kaopiz/KProgressHUD/tree/master/demo/src/main) for more information.
+See [**Javadocs**](http://kaopiz.github.io/KProgressHUD/) or [**sample**](https://github.com/Kaopiz/KProgressHUD/tree/master/demo/src/main) for more information.
 
 ## Contributing
 1. Fork it ( https://github.com/Kaopiz/KProgressHUD/fork )

@@ -18,6 +18,7 @@ package com.kaopiz.kprogresshud;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -34,8 +35,7 @@ public class KProgressHUD {
         SPIN_INDETERMINATE, PIE_DETERMINATE, ANNULAR_DETERMINATE, BAR_DETERMINATE
     }
 
-    // To avoid redundant APIs, all HUD functions will be forward to
-    // a custom dialog
+    // To avoid redundant APIs, make the HUD as a wrapper class around a Dialog
     private ProgressDialog mProgressDialog;
     private float mDimAmount;
     private int mWindowColor;
@@ -109,8 +109,7 @@ public class KProgressHUD {
 
     /**
      * Specify the dim area around the HUD, like in Dialog
-     * @param dimAmount May take value from 0 to 1.
-     *                  0 means no dimming, 1 mean darkness
+     * @param dimAmount May take value from 0 to 1. Default to 0 (no dimming)
      * @return Current HUD
      */
     public KProgressHUD setDimAmount(float dimAmount) {
@@ -132,11 +131,22 @@ public class KProgressHUD {
     }
 
     /**
+     * @deprecated  As of release 1.1.0, replaced by {@link #setBackgroundColor(int)}
+     * @param color ARGB color
+     * @return Current HUD
+     */
+    @Deprecated
+    public KProgressHUD setWindowColor(int color) {
+        mWindowColor = color;
+        return this;
+    }
+
+    /**
      * Specify the HUD background color
      * @param color ARGB color
      * @return Current HUD
      */
-    public KProgressHUD setWindowColor(int color) {
+    public KProgressHUD setBackgroundColor(int color) {
         mWindowColor = color;
         return this;
     }
@@ -152,8 +162,8 @@ public class KProgressHUD {
     }
 
     /**
-     * Change animate speed relative to default. Only have effect when use with indeterminate style
-     * @param scale 1 is default, 2 means double speed, 0.5 means half speed..etc.
+     * Change animation speed relative to default. Used with indeterminate style
+     * @param scale Default is 1. If you want double the speed, set the param at 2.
      * @return Current HUD
      */
     public KProgressHUD setAnimationSpeed(int scale) {
@@ -162,11 +172,20 @@ public class KProgressHUD {
     }
 
     /**
-     * Optional label to be displayed on the HUD
+     * Optional label to be displayed.
      * @return Current HUD
      */
     public KProgressHUD setLabel(String label) {
         mProgressDialog.setLabel(label);
+        return this;
+    }
+
+    /**
+     * Optional label to be displayed
+     * @return Current HUD
+     */
+    public KProgressHUD setLabel(String label, int color) {
+        mProgressDialog.setLabel(label, color);
         return this;
     }
 
@@ -176,6 +195,15 @@ public class KProgressHUD {
      */
     public KProgressHUD setDetailsLabel(String detailsLabel) {
         mProgressDialog.setDetailsLabel(detailsLabel);
+        return this;
+    }
+
+    /**
+     * Optional detail description to be displayed
+     * @return Current HUD
+     */
+    public KProgressHUD setDetailsLabel(String detailsLabel, int color) {
+        mProgressDialog.setDetailsLabel(detailsLabel, color);
         return this;
     }
 
@@ -257,6 +285,8 @@ public class KProgressHUD {
         private FrameLayout mCustomViewContainer;
         private BackgroundLayout mBackgroundLayout;
         private int mWidth, mHeight;
+        private int mLabelColor = Color.WHITE;
+        private int mDetailColor = Color.WHITE;
 		
         public ProgressDialog(Context context) {
             super(context);
@@ -300,19 +330,9 @@ public class KProgressHUD {
             }
 
             mLabelText = (TextView) findViewById(com.kaopiz.kprogresshud.R.id.label);
-            if (mLabel != null) {
-                mLabelText.setText(mLabel);
-                mLabelText.setVisibility(View.VISIBLE);
-            } else {
-                mLabelText.setVisibility(View.GONE);
-            }
+            setLabel(mLabel, mLabelColor);
             mDetailsText = (TextView) findViewById(com.kaopiz.kprogresshud.R.id.details_label);
-            if (mDetailsLabel != null) {
-                mDetailsText.setText(mDetailsLabel);
-                mDetailsText.setVisibility(View.VISIBLE);
-            } else {
-                mDetailsText.setVisibility(View.GONE);
-            }
+            setDetailsLabel(mDetailsLabel, mDetailColor);
         }
 
         private void addViewToFrame(View view) {
@@ -371,6 +391,34 @@ public class KProgressHUD {
             if (mDetailsText != null) {
                 if (detailsLabel != null) {
                     mDetailsText.setText(detailsLabel);
+                    mDetailsText.setVisibility(View.VISIBLE);
+                } else {
+                    mDetailsText.setVisibility(View.GONE);
+                }
+            }
+        }
+
+        public void setLabel(String label, int color) {
+            mLabel = label;
+            mLabelColor = color;
+            if (mLabelText != null) {
+                if (label != null) {
+                    mLabelText.setText(label);
+                    mLabelText.setTextColor(color);
+                    mLabelText.setVisibility(View.VISIBLE);
+                } else {
+                    mLabelText.setVisibility(View.GONE);
+                }
+            }
+        }
+
+        public void setDetailsLabel(String detailsLabel, int color) {
+            mDetailsLabel = detailsLabel;
+            mDetailColor = color;
+            if (mDetailsText != null) {
+                if (detailsLabel != null) {
+                    mDetailsText.setText(detailsLabel);
+                    mDetailsText.setTextColor(color);
                     mDetailsText.setVisibility(View.VISIBLE);
                 } else {
                     mDetailsText.setVisibility(View.GONE);

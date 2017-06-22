@@ -14,12 +14,12 @@ apply plugin: 'com.android.library'
 project.archivesBaseName = 'kprogresshud'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "26.0.0"
 
     defaultConfig {
-        minSdkVersion 8
-        targetSdkVersion 23
+        minSdkVersion 9
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -28,6 +28,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -53,7 +56,7 @@ ext {
     siteUrl = 'http://kaopiz.github.io/KProgressHUD/'
     gitUrl = 'https://github.com/Kaopiz/KProgressHUD'
 
-    libraryVersion = '1.0.5'
+    libraryVersion = '1.1.0'
 
     developerId = 'kaopiz'
     developerName = 'Kaopiz Software Co., Ltd.'
