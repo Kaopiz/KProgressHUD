@@ -34,6 +34,12 @@
             android:text="With details"/>
 
         <Button
+            android:id="@+id/grace_indeterminate"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="With grace time"/>
+
+        <Button
             android:id="@+id/determinate"
             android:layout_width="match_parent"
             android:layout_height="60dp"

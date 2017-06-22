@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,10 @@ public class KProgressHUD {
     private int mMaxProgress;
     private boolean mIsAutoDismiss;
 
+    private int mGraceTimeMs;
+    private Handler mGraceTimer;
+    private boolean mFinished;
+
     public KProgressHUD(Context context) {
         mContext = context;
         mProgressDialog = new ProgressDialog(context);
@@ -56,6 +61,8 @@ public class KProgressHUD {
         mAnimateSpeed = 1;
         mCornerRadius = 10;
         mIsAutoDismiss = true;
+        mGraceTimeMs = 0;
+        mFinished = false;
 
         setStyle(Style.SPIN_INDETERMINATE);
     }
@@ -256,9 +263,36 @@ public class KProgressHUD {
         return this;
     }
 
+    /**
+     * Grace period is the time (in milliseconds) that the invoked method may be run without
+     * showing the HUD. If the task finishes before the grace time runs out, the HUD will
+     * not be shown at all.
+     * This may be used to prevent HUD display for very short tasks.
+     * Defaults to 0 (no grace time).
+     * @param graceTimeMs Grace time in milliseconds
+     * @return Current HUD
+     */
+    public KProgressHUD setGraceTime(int graceTimeMs) {
+        mGraceTimeMs = graceTimeMs;
+        return this;
+    }
+
     public KProgressHUD show() {
         if (!isShowing()) {
-            mProgressDialog.show();
+            mFinished = false;
+            if (mGraceTimeMs == 0) {
+                mProgressDialog.show();
+            } else {
+                mGraceTimer = new Handler();
+                mGraceTimer.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mProgressDialog != null && !mFinished) {
+                            mProgressDialog.show();
+                        }
+                    }
+                }, mGraceTimeMs);
+            }
         }
         return this;
     }
@@ -268,8 +302,13 @@ public class KProgressHUD {
     }
 
     public void dismiss() {
+        mFinished = true;
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
+        }
+        if (mGraceTimer != null) {
+            mGraceTimer.removeCallbacksAndMessages(null);
+            mGraceTimer = null;
         }
     }
 
