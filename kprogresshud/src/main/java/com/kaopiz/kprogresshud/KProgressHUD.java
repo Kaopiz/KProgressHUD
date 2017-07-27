@@ -18,6 +18,7 @@ package com.kaopiz.kprogresshud;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -247,10 +248,31 @@ public class KProgressHUD {
 
     /**
      * Specify whether this HUD can be cancelled by using back button (default is false)
+     *
+     * Setting a cancelable to true with this method will set a null callback,
+     * clearing any callback previously set with
+     * {@link #setCancellable(DialogInterface.OnCancelListener)}
+     *
      * @return Current HUD
      */
     public KProgressHUD setCancellable(boolean isCancellable) {
         mProgressDialog.setCancelable(isCancellable);
+        mProgressDialog.setOnCancelListener(null);
+        return this;
+    }
+
+    /**
+     * Specify a callback to run when using the back button (default is null)
+     *
+     * @param listener The code that will run if the user presses the back
+     * button. If you pass null, the dialog won't be cancellable, just like
+     * if you had called {@link #setCancellable(boolean)} passing false.
+     *
+     * @return Current HUD
+     */
+    public KProgressHUD setCancellable(DialogInterface.OnCancelListener listener) {
+        mProgressDialog.setCancelable(null != listener);
+        mProgressDialog.setOnCancelListener(listener);
         return this;
     }
 
