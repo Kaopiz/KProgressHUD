@@ -22,6 +22,7 @@
 
 package com.kaopiz.progresshud.demo;
 
+import android.content.DialogInterface;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.kaopiz.progresshud.R;
@@ -85,7 +87,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 hud = KProgressHUD.create(this)
                         .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                         .setLabel("Please wait")
-                        .setCancellable(true);
+                        .setCancellable(new DialogInterface.OnCancelListener()
+                        {
+                            @Override public void onCancel(DialogInterface
+                                dialogInterface)
+                            {
+                                Toast.makeText(MainActivity.this, "You " +
+                                    "cancelled manually!", Toast
+                                    .LENGTH_SHORT).show();
+                            }
+                        });
+
                 scheduleDismiss();
                 break;
             case R.id.detail_indeterminate:
