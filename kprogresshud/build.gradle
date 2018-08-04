@@ -14,12 +14,12 @@ apply plugin: 'com.android.library'
 project.archivesBaseName = 'kprogresshud'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.0"
+    compileSdkVersion 26
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion 14
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -35,8 +35,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
 }
 
 
