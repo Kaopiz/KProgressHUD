@@ -31,7 +31,7 @@ Include this in your module `build.gradle`
 ```
 dependencies {
     // Other dependencies
-    compile 'com.kaopiz:kprogresshud:1.1.0'
+    implementation 'com.kaopiz:kprogresshud:1.3.0'
 }
 ```
 
@@ -75,7 +75,7 @@ KProgressHUD.create(MainActivity.this)
    .setLabel("This is a custom view")
    .show();
 ```
-The custom view can implement `Determinate` or `Indeterminate`, which make the HUD treats this view like the default determinate or indeterminate implementations, not required.
+Optionally, the custom view can implement `Determinate` or `Indeterminate` interface, which make the HUD treats this view like the default determinate or indeterminate one.
 
 See [**Javadocs**](http://kaopiz.github.io/KProgressHUD/) or [**sample**](https://github.com/Kaopiz/KProgressHUD/tree/master/demo/src/main) for more information.
 
@@ -85,12 +85,6 @@ See [**Javadocs**](http://kaopiz.github.io/KProgressHUD/) or [**sample**](https:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
-
-## Contributor
-* [tuanna-hsp](https://github.com/tuanna-hsp)
-* [nafuto](https://github.com/nafuto)
-* [iamzhouu](https://github.com/iamzhouu)
-* [Ctrl-Space](https://github.com/Ctrl-Space)
 
 ## License
 ```
