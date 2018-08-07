@@ -35,7 +35,7 @@ import android.widget.TextView;
 public class KProgressHUD {
 
     public enum Style {
-        SPIN_INDETERMINATE, PIE_DETERMINATE, ANNULAR_DETERMINATE, BAR_DETERMINATE
+        SPIN_INDETERMINATE, PIE_DETERMINATE, ANNULAR_DETERMINATE, BAR_DETERMINATE;
     }
 
     // To avoid redundant APIs, make the HUD as a wrapper class around a Dialog
@@ -44,6 +44,7 @@ public class KProgressHUD {
     private int mWindowColor;
     private float mCornerRadius;
     private Context mContext;
+    private ProgressView mProgressView;
 
     private int mAnimateSpeed;
 
@@ -105,13 +106,14 @@ public class KProgressHUD {
                 view = new PieView(mContext);
                 break;
             case ANNULAR_DETERMINATE:
-                view = new AnnularView(mContext);
+                view =  new AnnularView(mContext);
                 break;
             case BAR_DETERMINATE:
                 view = new BarView(mContext);
                 break;
             // No custom view style here, because view will be added later
         }
+        mProgressView = (ProgressView)view;
         mProgressDialog.setView(view);
         return this;
     }
@@ -276,6 +278,20 @@ public class KProgressHUD {
         mProgressDialog.setOnCancelListener(listener);
         return this;
     }
+
+
+    /**
+     * Specify color of progress view. Bar,Pie,Spin can be colorized with specific color. Allows you to use different color instead of white.
+     * @param color Color of progress view. 
+     * @return Current HUD
+     */
+    public KProgressHUD setProgressViewColor(int color) {
+        if(mProgressView != null){
+            mProgressView.setColor(color);
+        }
+        return this;
+    }
+
 
     /**
      * Specify whether this HUD closes itself if progress reaches max. Default is true.

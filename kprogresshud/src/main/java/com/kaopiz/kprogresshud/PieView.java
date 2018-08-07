@@ -24,7 +24,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
-class PieView extends View implements Determinate {
+public class PieView extends View implements Determinate {
 
     private Paint mWhitePaint;
     private Paint mGreyPaint;
@@ -92,6 +92,13 @@ class PieView extends View implements Determinate {
     @Override
     public void setProgress(int progress) {
         this.mProgress = progress;
+        invalidate();
+    }
+
+    @Override
+    public void setColor(int color) {
+        mWhitePaint.setColor(color);
+        mGreyPaint.setColor(color);
         invalidate();
     }
 }
