@@ -326,7 +326,7 @@ public class KProgressHUD {
 
     public void dismiss() {
         mFinished = true;
-        if (mContext !=null && !((Activity)mContext).isFinishing() && mProgressDialog != null && mProgressDialog.isShowing()) {
+        if (mContext != null && mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
         if (mGraceTimer != null) {
