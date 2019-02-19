@@ -3,7 +3,7 @@
 [ ![Download](https://api.bintray.com/packages/kaopiz/KProgressHUD/KProgressHUD/images/download.svg) ](https://bintray.com/kaopiz/KProgressHUD/KProgressHUD/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-KProgressHUD-green.svg?style=true)](https://android-arsenal.com/details/1/2975)
 
-An implement of ProgressHUD for Android, similar to MBProgressHUD, SVProgressHUD.
+A progress HUD implementation for Android.
 Inspired by [MBProgressHUD](https://github.com/jdg/MBProgressHUD) for iOS.
 
 ![](https://raw.githubusercontent.com/Kaopiz/KProgressHUD/master/demo/screenshots/screencast.gif)
@@ -26,7 +26,7 @@ Android 2.3 and later
 ## Adding KProgressHUD to your project
 
 ### Gradle
-Include this in your module `build.gradle`
+Include this in your app `build.gradle`
 
 ```
 dependencies {
@@ -36,11 +36,14 @@ dependencies {
 ```
 
 ### Source code
-You can download and import the `kprogresshud` folder as module to your project.
+If you want more control over the implementation, download and import the `kprogresshud` folder as a module to your project and modify according to your need.
 
 ## Usage
 
-The usage of KProgressHUD is pretty straight forward. You create the HUD, customize its style and show it on the UI thread. Then fire a background thread to work on long-running tasks. When done, call dismiss() to close it (if you use a determinate style, the HUD will automatically dismiss if progress reaches its max).
+The usage of KProgressHUD is pretty straight forward. 
+- Create the HUD, customize its style and show on the UI thread. 
+- Fire a background worker to handle long-running tasks. 
+- When done, call `dismiss()` to close (or if you use a determinate style, the HUD will automatically dismiss when progress reaches its max).
 
 Indeterminate HUD
 ```java
@@ -64,7 +67,7 @@ KProgressHUD hud = KProgressHUD.create(MainActivity.this)
 hud.setProgress(90);
 ```
 
-Alternatively, you can create a custom view and pass to the HUD to display it.
+You can also create a custom view to be displayed.
 ```java
 ImageView imageView = new ImageView(this);
 imageView.setBackgroundResource(R.drawable.spin_animation);
