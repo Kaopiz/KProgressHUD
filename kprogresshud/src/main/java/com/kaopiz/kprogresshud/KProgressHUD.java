@@ -362,14 +362,18 @@ public class KProgressHUD {
 
             Window window = getWindow();
             window.setBackgroundDrawable(new ColorDrawable(0));
-            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             WindowManager.LayoutParams layoutParams = window.getAttributes();
-            layoutParams.dimAmount = mDimAmount;
+
+            if(mDimAmount>0){//等于零的时候，没必要设置dimAmount的值，当状态栏是白色背景的时候，文字会变白
+                window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                layoutParams.dimAmount = mDimAmount;
+            }else{
+                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            }
+
             layoutParams.gravity = Gravity.CENTER;
             window.setAttributes(layoutParams);
-
             setCanceledOnTouchOutside(false);
-
             initViews();
         }
 
