@@ -19,61 +19,77 @@
             android:id="@+id/indeterminate"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:onClick="onClick"
             android:text="Indeterminate"/>
 
         <Button
             android:id="@+id/label_indeterminate"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:onClick="onClick"
             android:text="With label and cancellable"/>
 
         <Button
             android:id="@+id/detail_indeterminate"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:onClick="onClick"
             android:text="With details"/>
 
         <Button
             android:id="@+id/grace_indeterminate"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:onClick="onClick"
             android:text="With grace time"/>
 
         <Button
             android:id="@+id/determinate"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:onClick="onClick"
             android:text="Determinate"/>
 
         <Button
             android:id="@+id/annular_determinate"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:onClick="onClick"
             android:text="Annular determinate"/>
 
         <Button
             android:id="@+id/bar_determinate"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:onClick="onClick"
             android:text="Bar determinate"/>
 
         <Button
             android:id="@+id/custom_view"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:onClick="onClick"
             android:text="Custom view"/>
 
         <Button
             android:id="@+id/dim_background"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:onClick="onClick"
             android:text="Dim background"/>
 
         <Button
             android:id="@+id/custom_color_animate"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:onClick="onClick"
             android:text="Custom color and speed"/>
+        <Button
+            android:id="@+id/custom_lottie"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:onClick="onClick"
+            android:text="Custom lottie"/>
     </LinearLayout>
 </ScrollView>
 

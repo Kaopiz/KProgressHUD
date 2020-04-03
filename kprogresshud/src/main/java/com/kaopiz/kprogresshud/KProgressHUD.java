@@ -276,6 +276,19 @@ public class KProgressHUD {
         mProgressDialog.setOnCancelListener(listener);
         return this;
     }
+    /**
+     * Specify a callback to run when using the show button (default is null)
+     *
+     * @param listener The code that will run if the user presses the back
+     * button. If you pass null, the dialog won't be cancellable, just like
+     * if you had called {@link #setCancellable(boolean)} passing false.
+     *
+     * @return Current HUD
+     */
+    public KProgressHUD setShowlable(DialogInterface.OnShowListener listener) {
+        mProgressDialog.setOnShowListener(listener);
+        return this;
+    }
 
     /**
      * Specify whether this HUD closes itself if progress reaches max. Default is true.
