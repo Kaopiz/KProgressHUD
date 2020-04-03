@@ -26,12 +26,14 @@ import android.content.DialogInterface;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.airbnb.lottie.LottieAnimationView;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.kaopiz.progresshud.R;
 
@@ -42,35 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button indeterminate = (Button) findViewById(R.id.indeterminate);
-        indeterminate.setOnClickListener(this);
-
-        Button labelIndeterminate = (Button) findViewById(R.id.label_indeterminate);
-        labelIndeterminate.setOnClickListener(this);
-
-        Button detailIndeterminate = (Button) findViewById(R.id.detail_indeterminate);
-        detailIndeterminate.setOnClickListener(this);
-
-        Button graceIndeterminate = (Button) findViewById(R.id.grace_indeterminate);
-        graceIndeterminate.setOnClickListener(this);
-
-        Button determinate = (Button) findViewById(R.id.determinate);
-        determinate.setOnClickListener(this);
-
-        Button annularDeterminate = (Button) findViewById(R.id.annular_determinate);
-        annularDeterminate.setOnClickListener(this);
-
-        Button barDeterminate = (Button) findViewById(R.id.bar_determinate);
-        barDeterminate.setOnClickListener(this);
-
-        Button customView = (Button) findViewById(R.id.custom_view);
-        customView.setOnClickListener(this);
-
-        Button dimBackground = (Button) findViewById(R.id.dim_background);
-        dimBackground.setOnClickListener(this);
-
-        Button customColor = (Button) findViewById(R.id.custom_color_animate);
-        customColor.setOnClickListener(this);
     }
 
     private KProgressHUD hud;
@@ -155,6 +128,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setWindowColor(getResources().getColor(R.color.colorPrimary))
                         .setAnimationSpeed(2);
                 scheduleDismiss();
+                break;
+            case R.id.custom_lottie:
+                final LottieAnimationView lottie = new LottieAnimationView(this);
+                lottie.setAnimation(R.raw.loading);
+                //得到总大小 目前是1.0
+                lottie.getScale();
+                //控制大小
+                lottie.setScale(0.5f);
+                hud = KProgressHUD.create(this)
+                        .setCustomView(lottie)
+                        .setShowlable(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface dialog) {
+                                lottie.playAnimation();
+                            }
+                        })
+                .setCancellable(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        lottie.setProgress(0.0f);
+                        lottie.cancelAnimation();
+                    }
+                })
+                ;
+                scheduleDismiss();
+                break;
+            default:
                 break;
         }
 
